@@ -28,7 +28,11 @@
                 <div class="card-body">
                     <div class="text-center" v-show="cek">
                         <p> {{ cek }} </p> 
-                        <button class="btn btn-primary" @click="tebakLagi" >Tebak Lagi</button>
+                        <button class="btn btn-primary" @click="tebakLagi" >
+                            <span v-if="hasil=='benar'">Main Lagi</span>
+                            <span v-if="hasil=='salah'">Tebak Lagi</span>
+                            <span v-if="hasil=='stop'">Main Lagi</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -44,7 +48,7 @@
         el: "#app",
         data: {
             angka: Math.floor(Math.random() * 10) + 1,
-            angkaInput:0,
+            angkaInput:"",
             kesempatan: 3,
             hasil: "",
             cek : "",
@@ -60,21 +64,32 @@
                 console.log(this.angka);
                 this.condition=true;
                 if(this.angkaInput == this.angka){
-                    this.cek = "Hore anda benar";
+                    this.cek = "Hore anda benar :)";
                     this.hasil = "benar";
                 }
                 else{
-                    this.cek = "Anda salah"
+                    this.cek = "Tebakan anda salah :("
                     this.kesempatan--;
                     this.hasil="salah";
                     if(this.kesempatan==0){
                         this.hasil="stop";
-                        this.cek = "Kesempatan anda habis, anda kalah :(";
+                        this.cek = `Kesempatan anda habis, anda kalah :( Jawaban-nya adalah ${this.angka}`;
                     }
                 }
             },
             tebakLagi(){
-                this.condition=false;
+                if(this.hasil == "salah"){
+                    this.condition=false;
+                    this.hasil="";
+                    this.cek="";
+                }else{
+                    this.kesempatan = 3;
+                    this.angka = Math.floor(Math.random() * 10) + 1;
+                    this.hasil = "";
+                    this.cek = "";
+                    this.condition=false;    
+                }
+                this.angkaInput="";
             },
         },
     });
