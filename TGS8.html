@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Tugas 8</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        
+        <div class="col-5 justify-content-center mx-auto my-5">
+            <div class="card-header text-center"><h1>TO DO LIST</h1></div>
+        </div>
+
+        <div class="col-5 justify-content-center mx-auto h-100" style="overflow-y:auto; max-height: 400px;">
+            <div v-for="(toDo,index) in listTodo" :key="index">
+                <div class="card my-2">
+                    <div class="card-body">
+                        <button style="position: absolute; cursor: pointer; left: 500px;" @click="hapusData(index)">x</button>
+                        <span v-if="toDo.isPenting == 'penting'" class="badge badge-danger">{{ toDo.isPenting }}</span>
+                        <span v-else-if="toDo.isPenting == 'biasa'" class="badge badge-primary">{{ toDo.isPenting }}</span>
+                        <span v-else-if="toDo.isPenting == 'tidak penting'" class="badge badge-success">{{ toDo.isPenting }}</span>
+                        <br>
+                        <h4>{{ toDo.judul }}</h4>
+                        <p>{{ toDo.note }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-5 justify-content-center mx-auto mt-4">
+                <div class="form-group">
+                    <label for="toDo.judul">Apa yang mau kamu kerjakan?</label>
+                    <input type="text" class="form-control" id="toDo.judul" v-model="toDo.judul">
+                </div>
+
+                <div class="form-group">
+                    <label for="toDo.isPenting">Penting gak?</label>
+                    <select class="form-control" id="toDo.isPenting" v-model="toDo.isPenting">
+                        <option value="penting">Penting</option>
+                        <option value="biasa">Biasa</option>
+                        <option value="tidak penting">Tidak Penting</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="toDo.note">Ada catatan Penting ?</label>
+                    <textarea type="text" class="form-control" id="toDo.note" v-model="toDo.note"></textarea>
+                </div>
+
+                <div>
+                    <button class="btn btn-primary" @click="resetForm">Reset</button>
+                    <button class="btn btn-primary" @click="submitForm">Submit</button>
+                </div>
+        </div>
+
+        <footer class="text-center my-5">
+            {{ `${mahasiswa.nama} | ${mahasiswa.npm} | ${mahasiswa.kelas}` }}
+        </footer>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            listTodo: [],
+            toDo: {
+                judul: "",
+                isPenting: "",
+                note: "",
+            },
+            mahasiswa: {
+                nama: "Lawrenxius Benny",
+                npm: "180709652",
+                kelas: "D",
+            },
+        },
+        methods: {
+            resetForm(){
+                this.toDo.judul= "";
+                this.toDo.isPenting= "";
+                this.toDo.note= "";
+            },
+            submitForm(){
+                var newTodo = {
+                    judul: this.toDo.judul,
+                    isPenting: this.toDo.isPenting,
+                    note: this.toDo.note,
+                };
+                this.listTodo.push(newTodo);
+            },
+            hapusData(index){
+                this.listTodo.splice(index,1);
+            }
+        },
+    });
+</script>
+</html>
